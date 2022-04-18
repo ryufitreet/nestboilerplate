@@ -1,15 +1,15 @@
 #!/bin/bash
 set -e
 
-SERVER="altcoin_base";
-PW=")dpy]7Te{f9A&S/Pxrgs_*#7\.5gVy";
+SERVER="postgres_db";
+PW="change_me_please_123";
 DB="crypto";
 
 echo "echo stop & remove old docker [$SERVER] and starting new fresh instance of [$SERVER]"
 (docker kill $SERVER || :) && \
   (docker rm $SERVER || :) && \
-  docker run --name $SERVER -e PGPASSWORD=$PW \
-  -e PGPASSWORD=$PW \
+  docker run --name $SERVER -e POSTGRES_PASSWORD=$PW \
+  -e POSTGRES_PASSWORD=$PW \
   -p 5432:5432 \
   -d postgres
 
