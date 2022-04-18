@@ -30,6 +30,13 @@ class ConfigService {
   }
 
   public getTypeOrmConfig(): TypeOrmModuleOptions {
+    let entitiesPath = 'src/model/*.ts';
+    let migrationsPath = `${__dirname}/../migration/*.ts`;
+    if (__dirname.includes('/dist')) {
+      entitiesPath = `${__dirname}/../model/*.js`;
+      migrationsPath = 'dist/**/migration/*.js';
+    }
+
     return {
       type: 'postgres',
 
