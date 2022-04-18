@@ -1,10 +1,10 @@
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
+import * as dotenv from 'dotenv';
 
-require('dotenv').config();
+dotenv.config();
 
 class ConfigService {
-
-  constructor(private env: { [k: string]: string | undefined }) { }
+  constructor(private env: { [k: string]: string | undefined }) {}
 
   private getValue(key: string, throwOnMissing = true): string {
     const value = this.env[key];
@@ -16,7 +16,7 @@ class ConfigService {
   }
 
   public ensureValues(keys: string[]) {
-    keys.forEach(k => this.getValue(k, true));
+    keys.forEach((k) => this.getValue(k, true));
     return this;
   }
 
@@ -46,11 +46,11 @@ class ConfigService {
       password: this.getValue('PGPASSWORD'),
       database: this.getValue('PGDATABASE'),
 
-      entities: ['src/model/*.entity{.ts,.js}'],
+      entities: [entitiesPath],
 
       migrationsTableName: 'migration',
 
-      migrations: ['src/migration/*.ts'],
+      migrations: [migrationsPath],
 
       cli: {
         migrationsDir: 'src/migration',
@@ -59,16 +59,14 @@ class ConfigService {
       ssl: this.isProduction(),
     };
   }
-
 }
 
-const configService = new ConfigService(process.env)
-  .ensureValues([
-    'PGHOST',
-    'PGPORT',
-    'PGUSER',
-    'PGPASSWORD',
-    'PGDATABASE'
-  ]);
+const configService = new ConfigService(process.env).ensureValues([
+  'PGHOST',
+  'PGPORT',
+  'PGUSER',
+  'PGPASSWORD',
+  'PGDATABASE',
+]);
 
 export { configService };
